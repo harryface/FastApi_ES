@@ -1,0 +1,6 @@
+.vscode
+__pycache__
+.env
+rest.http
+test.py
+/documents*

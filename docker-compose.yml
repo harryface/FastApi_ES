@@ -1,0 +1,55 @@
+version: '3.6'
+
+services:
+  # https://testdriven.io/blog/fastapi-and-celery/
+  web:
+    container_name: hamoye-web
+    # restart: always
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./app/:/code/app
+    ports:
+      - 8000
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+  
+  worker:
+    build: .
+    command: celery worker --app=app.worker.celery --loglevel=info --logfile=app/logs/celery.log
+    volumes:
+      - ./app/:/code/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: redis:6-alpine
+
+  dashboard:
+    build: .
+    command: flower --app=app.worker.celery --port=5555 --broker=redis://redis:6379/0
+    ports:
+      - 5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+      - worker
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+      - dashboard
+    
