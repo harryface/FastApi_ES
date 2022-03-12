@@ -3,6 +3,7 @@
 - CD into the root folder of the application
 - On your terminal, run `docker-compose build`
 - On your terminal, run `docker-compose up -d`
+- When done, to shut it down, run `docker-compose down -v`
 
 # API endpoints
 These endpoints allow you to utilize the web application.
@@ -11,7 +12,7 @@ These endpoints allow you to utilize the web application.
 
 **POST**
 - For Creating an Aircraft
-[http://localhost:8000/search/](#search)
+[http://localhost:1337/search/](#search)
 
 ***Parameters***
 `content-type: application/json`
@@ -32,4 +33,4 @@ These endpoints allow you to utilize the web application.
 
 # Task Dashboard
 * To get the information regarding the tasks already running, visit
-http://localhost:5556/
+http://localhost:1337/worker

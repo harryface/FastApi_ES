@@ -48,13 +48,13 @@ def search(
     if day:
         search_data["query"]["bool"]["should"].append({"match": {"day": day}})
     if range_from and range_to:
-        search_data["query"]["bool"]["should"].append(
-            {"range": {"date": {"gte": range_from, "lte": range_to}}}
-        )
+        search_data["query"]["bool"]["filter"] = {"range": {"date": {"gte": range_from, "lte": range_to}}}
+
     if len(search_data["query"]["bool"]["should"]) == 0:
         search_data = {"query": {"match_all": {}}}
         # So we will not give out all data
         return {}
+    print(search_data)
 
     try:
         response = session.post(
