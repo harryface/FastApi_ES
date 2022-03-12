@@ -3,4 +3,5 @@ __pycache__
 .env
 rest.http
 test.py
+personal.md
 /documents*

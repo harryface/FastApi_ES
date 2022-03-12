@@ -1,8 +1,8 @@
-from datetime import datetime
 from functools import lru_cache
 import boto3
 from botocore.exceptions import ClientError
 
+from .config import todays_date
 from .models import Settings
 
 @lru_cache()
@@ -11,8 +11,7 @@ def get_settings():
 
 
 bucket_name = "secai-text-summ-final-csv"
-object_name = f"{datetime.today().strftime('%Y-%m-%d')}.csv"
-# object_name = "2022-03-10.csv"
+object_name = f"{todays_date}.csv"
 
 
 def create_presigned_url(

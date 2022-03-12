@@ -33,4 +33,4 @@ These endpoints allow you to utilize the web application.
 
 # Task Dashboard
 * To get the information regarding the tasks already running, visit
-http://localhost:1337/worker
+http://localhost:1337/

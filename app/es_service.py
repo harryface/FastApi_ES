@@ -10,7 +10,7 @@ from .database import crud, schemas
 from .database.settings import SessionLocal
 from .aws_boto import create_presigned_url
 
-from .config import session, hostname, index
+from .config import index, hostname, session, todays_date
 from .worker import index_data
 
 
@@ -82,8 +82,7 @@ class StartIndexing:
 
     def start(self):
         # get date
-        date = datetime.today().strftime("%Y-%m-%d")
-        # date = "2022-03-10.csv"
+        date = todays_date
         # check if date exists
         with contextmanager(get_db)() as db:
             db_day = crud.get_day_by_date(db, date=date)
@@ -139,7 +138,7 @@ class StartIndexing:
                 "year": x[0],
                 "month": x[1],
                 "day": x[2],
-                "date": f"{x[0]}-{x[1]}-{x[2]}",
+                "date": f"{x[0]}-{str(x[1]).zfill(2)}-{str(x[2]).zfill(2)}",
                 "action_geo_full_name": x[3],
                 "source_url": x[4],
                 "summary": x[5],

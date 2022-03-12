@@ -30,7 +30,7 @@ def run_cron():
 @app.on_event("startup")
 def start_cron():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(run_cron, 'cron', hour='*/12')
+    scheduler.add_job(run_cron, 'cron', minute='*/2')
     scheduler.start()
 
 
