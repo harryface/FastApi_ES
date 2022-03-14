@@ -48,6 +48,3 @@ These endpoints allow you to utilize the web application.
 # Task Dashboard
 * To get the information regarding the tasks already running, visit
 http://localhost:1337/
-
-# Live Server
-`ec2-18-222-120-235.us-east-2.compute.amazonaws.com`
