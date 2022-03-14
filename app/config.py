@@ -18,4 +18,3 @@ session = requests.Session()
 session.auth = (username, password)
 
 todays_date = datetime.today().strftime("%Y-%m-%d")
-todays_date = "2022-03-08"

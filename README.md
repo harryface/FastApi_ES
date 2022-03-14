@@ -11,7 +11,7 @@ These endpoints allow you to utilize the web application.
 ## Searching
 
 **POST**
-- For Creating an Aircraft
+- For Searching Data
 [http://localhost:1337/search/](#search)
 
 ***Parameters***
@@ -24,7 +24,21 @@ These endpoints allow you to utilize the web application.
 |     `day`     | not required |  string  | activity day                  |
 |  `range_from` | not required |  string  | (ISO 8601) date format        |
 |   `range_to`  | not required |  string  | (ISO 8601) date format        |
-|   `keywprd`   | not required |  string  | activity keyword              |
+|   `keyword`   | not required |  string  | activity keyword              |
+
+
+## Manually Indexing
+
+**POST**
+- For Manually Indexing for a Day
+[http://localhost:1337/manually-index/](#manually-index)
+
+***Parameters***
+`content-type: application/json`
+
+|     Field     |   Required   |   Type   | Description                   |
+| -------------:|:------------:|:--------:|-------------------------------|
+|     `date`    |   required   |  string  | (ISO 8601) date format        |
 
 
 ## Documentation

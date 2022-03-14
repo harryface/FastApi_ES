@@ -25,6 +25,7 @@ def get_db():
 
 def search(
     keyword: Optional[str] = None,
+    location: Optional[str] = None,
     year: Optional[str] = None,
     month: Optional[str] = None,
     day: Optional[str] = None,
@@ -38,9 +39,12 @@ def search(
     search_data = {"query": {"bool": {"should": []}}}
 
     if keyword:
-        search_data["query"]["bool"]["should"].append({"match": {"summary": keyword}})
+        # search_data["query"]["bool"]["should"].append({"match": {"summary": keyword}})
         search_data["query"]["bool"]["should"].append({"match": {"topic": keyword}})
         search_data["query"]["bool"]["should"].append({"match": {"headline": keyword}})
+    if location:
+        search_data["query"]["bool"]["should"].append({"match": {"action_geo_full_name": location}})
+        search_data["query"]["bool"]["should"].append({"match": {"ner_location": location}})
     if year:
         search_data["query"]["bool"]["should"].append({"match": {"year": year}})
     if month:
@@ -81,6 +85,7 @@ class StartIndexing:
         pass
 
     def start(self):
+        answer = False
         # get date
         date = todays_date
         # check if date exists
@@ -95,7 +100,28 @@ class StartIndexing:
                     answer = self.__bulk_insert(url)
                     if answer:
                         crud.create_day(db=db, day=schemas.DayCreate(date=date))
-        return
+        return answer
+
+
+    def manual_start(self, date):
+        """
+        For manually indexing csv data of a particular date.
+        """
+        answer = False
+        # check if date exists
+        with contextmanager(get_db)() as db:
+            db_day = crud.get_day_by_date(db, date=date)
+            # if it does, do nothing else, run index
+            if db_day:
+                return
+            else:
+                url = create_presigned_url(object_name=f"{date}.csv")
+                if url:
+                    answer = self.__bulk_insert(url)
+                    if answer:
+                        crud.create_day(db=db, day=schemas.DayCreate(date=date))
+        return answer
+
 
     def __bulk_insert(self, url):
         """
@@ -107,6 +133,7 @@ class StartIndexing:
         # https://towardsdatascience.com/apply-function-to-pandas-dataframe-rows-76df74165ee4
         # Read in the csv
         try:
+            print(url)
             df = pd.read_csv(url)
             # push to worker
             answer = self.__push_to_worker(df)
@@ -129,6 +156,7 @@ class StartIndexing:
             df["Month"],
             df["Day"],
             df["ActionGeo_FullName"],
+            df["Ner_Location"],
             df["Source_Url"],
             df["Summary"],
             df["topic"],
@@ -140,10 +168,11 @@ class StartIndexing:
                 "day": x[2],
                 "date": f"{x[0]}-{str(x[1]).zfill(2)}-{str(x[2]).zfill(2)}",
                 "action_geo_full_name": x[3],
-                "source_url": x[4],
-                "summary": x[5],
-                "topic": x[6],
-                "headline": x[7],
+                "ner_location": x[4],
+                "source_url": x[5],
+                "summary": x[6],
+                "topic": x[7],
+                "headline": x[8],
             }
             # Send to celery worker
             index_data.delay(body)
