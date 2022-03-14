@@ -22,6 +22,7 @@ These endpoints allow you to utilize the web application.
 |     `year`    | not required |  string  | activity Year                 |
 |    `month`    | not required |  string  | activity Month                |
 |     `day`     | not required |  string  | activity day                  |
+|   `location`  | not required |  string  | activity location             |
 |  `range_from` | not required |  string  | (ISO 8601) date format        |
 |   `range_to`  | not required |  string  | (ISO 8601) date format        |
 |   `keyword`   | not required |  string  | activity keyword              |
