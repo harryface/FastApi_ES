@@ -18,6 +18,7 @@ Content-Type: application/json
 Note:
 The 'range_from' and 'range_to' field receives an ISO date formatted string (e.g) "2022-03-14"; the rest receives a string.
 The 'range_from' and 'range_to' acts as a filter, while the rest acts as a search field; as a 'contain' lookup.
+The value for the 'lookup' must be either "inclusive" or "exclusive"
 
 2) Manual Index Endpoint
 

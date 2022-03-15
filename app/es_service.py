@@ -44,12 +44,15 @@ def search(
     search_data = {"query": {"bool": {type_: []}}}
 
     if keyword:
-        # search_data["query"]["bool"][type_].append({"match": {"summary": keyword}})
-        search_data["query"]["bool"][type_].append({"match": {"topic": keyword}})
-        search_data["query"]["bool"][type_].append({"match": {"headline": keyword}})
+        search_data["query"]["bool"]["should"] = [
+            {"match": {"topic": keyword}},
+            {"match": {"headline": keyword}}
+        ]
     if location:
-        search_data["query"]["bool"][type_].append({"match": {"action_geo_full_name": location}})
-        search_data["query"]["bool"][type_].append({"match": {"ner_location": location}})
+        search_data["query"]["bool"]["should"] = [
+            {"match": {"action_geo_full_name": location}},
+            {"match": {"ner_location": location}}
+        ]
     if year:
         search_data["query"]["bool"][type_].append({"match": {"year": year}})
     if month:
