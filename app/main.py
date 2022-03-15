@@ -51,7 +51,7 @@ def manually_index(csv_file_date: CSVFileDate):
     indexed = indexing.manual_start(csv_file_date.date)
     if indexed:
         return resp
-    return {"status": "Error", "message": "Something went wrong"}
+    return {"status": "Error", "message": "Something went wrong", "detail": "Either it has been indexed, or the file is not available yet"}
 
 
 @app.post("/search/", status_code=200)
@@ -60,6 +60,7 @@ def search_item(search_query: SearchQuery):
     # return csv_dict
     # return bulk_insert(csv_file.url)
     result = search(
+        search_query.lookup,
         search_query.keyword,
         search_query.location,
         search_query.year,

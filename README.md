@@ -19,6 +19,7 @@ These endpoints allow you to utilize the web application.
 
 |     Field     |   Required   |   Type   | Description                   |
 | -------------:|:------------:|:--------:|-------------------------------|
+|    `lookup`   | not required |  string  | "inclusive" or "exclusive"    |
 |     `year`    | not required |  string  | activity Year                 |
 |    `month`    | not required |  string  | activity Month                |
 |     `day`     | not required |  string  | activity day                  |

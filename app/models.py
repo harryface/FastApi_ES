@@ -1,7 +1,8 @@
 import datetime
-from typing import Optional
+from typing import Literal, Optional
 from pydantic import BaseModel, BaseSettings, ValidationError, validator
 
+# https://medium.com/swlh/cool-things-you-can-do-with-pydantic-fc1c948fbde0
 
 class CSVFileDate(BaseModel):
     date: str
@@ -16,6 +17,7 @@ class CSVFileDate(BaseModel):
 
 
 class SearchQuery(BaseModel):
+    lookup: Literal['exclusive', 'inclusive']
     keyword: Optional[str]
     location: Optional[str]
     day: Optional[str]
@@ -23,16 +25,6 @@ class SearchQuery(BaseModel):
     year: Optional[str]
     range_from: Optional[str]
     range_to: Optional[str]
-
-    @validator("range_from", "range_to")
-    def date_must_be_iso(cls, v):
-        try:
-            datetime.datetime.strptime(v.range_from, "%Y-%m-%d")
-            datetime.datetime.strptime(v.range_to, "%Y-%m-%d")
-        except ValueError:
-            raise ValidationError("Incorrect data format, should be YYYY-MM-DD")
-
-        return v
 
 
 class Settings(BaseSettings):

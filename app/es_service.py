@@ -1,7 +1,6 @@
 import json
 from contextlib import contextmanager
 from typing import Optional
-from datetime import datetime
 
 from fastapi import HTTPException
 import pandas as pd
@@ -24,6 +23,7 @@ def get_db():
 
 
 def search(
+    lookup: str,
     keyword: Optional[str] = None,
     location: Optional[str] = None,
     year: Optional[str] = None,
@@ -36,25 +36,30 @@ def search(
     Feed in date and keyword, for a search
     """
 
-    search_data = {"query": {"bool": {"should": []}}}
+    if lookup == "inclusive":
+        type_ = "should"
+    else:
+        type_ = "must"
+
+    search_data = {"query": {"bool": {type_: []}}}
 
     if keyword:
-        # search_data["query"]["bool"]["should"].append({"match": {"summary": keyword}})
-        search_data["query"]["bool"]["should"].append({"match": {"topic": keyword}})
-        search_data["query"]["bool"]["should"].append({"match": {"headline": keyword}})
+        # search_data["query"]["bool"][type_].append({"match": {"summary": keyword}})
+        search_data["query"]["bool"][type_].append({"match": {"topic": keyword}})
+        search_data["query"]["bool"][type_].append({"match": {"headline": keyword}})
     if location:
-        search_data["query"]["bool"]["should"].append({"match": {"action_geo_full_name": location}})
-        search_data["query"]["bool"]["should"].append({"match": {"ner_location": location}})
+        search_data["query"]["bool"][type_].append({"match": {"action_geo_full_name": location}})
+        search_data["query"]["bool"][type_].append({"match": {"ner_location": location}})
     if year:
-        search_data["query"]["bool"]["should"].append({"match": {"year": year}})
+        search_data["query"]["bool"][type_].append({"match": {"year": year}})
     if month:
-        search_data["query"]["bool"]["should"].append({"match": {"month": month}})
+        search_data["query"]["bool"][type_].append({"match": {"month": month}})
     if day:
-        search_data["query"]["bool"]["should"].append({"match": {"day": day}})
+        search_data["query"]["bool"][type_].append({"match": {"day": day}})
     if range_from and range_to:
         search_data["query"]["bool"]["filter"] = {"range": {"date": {"gte": range_from, "lte": range_to}}}
 
-    if len(search_data["query"]["bool"]["should"]) == 0:
+    if len(search_data["query"]["bool"][type_]) == 0:
         search_data = {"query": {"match_all": {}}}
         # So we will not give out all data
         return {}

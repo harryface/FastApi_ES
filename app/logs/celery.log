@@ -9398,3 +9398,8 @@
 [2022-03-12 10:04:31,938: INFO/ForkPoolWorker-4] Task index_data[2964420c-f640-424c-aedd-5442f179d12f] succeeded in 0.40307049998955335s: True
 [2022-03-12 10:04:31,939: INFO/ForkPoolWorker-2] Task index_data[2ed26d64-d2a3-4a9d-bd72-b3622f115e18] succeeded in 0.4046449000015855s: True
 [2022-03-12 10:04:31,941: INFO/ForkPoolWorker-1] Task index_data[e7ed1078-84e0-4b5f-9fe1-3af812c37b97] succeeded in 0.3472495999885723s: True
+[2022-03-15 11:59:23,318: INFO/MainProcess] Connected to redis://redis:6379/0
+[2022-03-15 11:59:23,376: INFO/MainProcess] mingle: searching for neighbors
+[2022-03-15 11:59:24,454: INFO/MainProcess] mingle: all alone
+[2022-03-15 11:59:24,787: INFO/MainProcess] celery@7471b3d6ed49 ready.
+[2022-03-15 11:59:29,147: INFO/MainProcess] Events of group {task} enabled by remote.

@@ -1,6 +1,8 @@
 .vscode
 __pycache__
 .env
+db.security
+celery.log
 rest.http
 test.py
 personal.md

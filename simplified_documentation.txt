@@ -1,0 +1,31 @@
+There are two endpoints open to the public for interaction
+1) Search Endpoint
+
+POST http://ec2-18-222-120-235.us-east-2.compute.amazonaws.com/search/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "lookup": "",
+    "keyword": "",
+    "day": "",
+    "month": "",
+    "location": "",
+    "year": "",
+    "range_from": "",
+    "range_to": ""
+}
+
+Note:
+The 'range_from' and 'range_to' field receives an ISO date formatted string (e.g) "2022-03-14"; the rest receives a string.
+The 'range_from' and 'range_to' acts as a filter, while the rest acts as a search field; as a 'contain' lookup.
+
+2) Manual Index Endpoint
+
+POST http://ec2-18-222-120-235.us-east-2.compute.amazonaws.com/manually-index/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "date": ""
+}
+
+NB: The date field receives an ISO date formatted string (e.g) "2022-03-14"
