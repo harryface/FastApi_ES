@@ -20,7 +20,7 @@ services:
   
   worker:
     build: .
-    command: celery worker --app=app.worker.celery --loglevel=info --logfile=app/logs/celery.log
+    command: celery worker --app=app.worker.celery --loglevel=info --logfile=app/log/celery.log
     volumes:
       - ./app/:/code/app
     restart: unless-stopped
@@ -55,7 +55,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
-      - ./nginx/log/:/var/log/nginx/
+      - ./app/logs/:/var/log/nginx/
     depends_on:
       - web
       - dashboard

@@ -1,6 +1,7 @@
 import logging
+from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from typing import Optional
 
 from .database import models
@@ -52,6 +53,20 @@ def manually_index(csv_file_date: CSVFileDate):
     if indexed:
         return resp
     return {"status": "Error", "message": "Something went wrong", "detail": "Either it has been indexed, or the file is not available yet"}
+
+
+@app.get("/cron-index/")
+def cron_index():
+    '''
+    For the machine cron job, incase apscheduler decides to fail.
+    '''
+    todays_date = datetime.today().strftime("%Y-%m-%d")
+    indexing = StartIndexing()
+    indexed = indexing.manual_start(todays_date)
+    if indexed:
+        return { "status": "Successfull"}
+    else:
+        raise HTTPException(status_code=404, detail="Did not work")
 
 
 @app.post("/search/", status_code=200)

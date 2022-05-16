@@ -2,7 +2,7 @@
 __pycache__
 .env
 db.security
-celery.log
+/app/logs*
 rest.http
 test.py
 personal.md
